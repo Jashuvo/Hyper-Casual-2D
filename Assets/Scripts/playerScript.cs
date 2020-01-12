@@ -33,7 +33,8 @@ public class playerScript : MonoBehaviour
 
     void DestroyAndMakePlatform(Collider2D platform)
     {
-        Destroy(platform);
+        //Destroy(platform.gameObject);
+        platform.gameObject.SetActive(false);
         spawnPlatformScript.instance.MakePlatform();
     }
     void Update()

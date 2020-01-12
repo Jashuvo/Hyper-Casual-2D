@@ -13,17 +13,37 @@ public class spawnPlatformScript : MonoBehaviour
 
     public static spawnPlatformScript instance = null;
 
+    List<GameObject> platformList = new List<GameObject>();
+
     void Start()
     {
         if (instance == null)
         {
             instance = this;
         }
+
+        MakeObjects();
+
         for (int i = 0; i< 5; i++)
         {
             MakePlatform();
         }
         
+    }
+
+    private void MakeObjects()
+    {
+        for( int i=0; i<5; i++)
+        {
+            GameObject platform = Instantiate(platformPrefab);
+            platform.SetActive(false);
+            platformList.Add(platform);
+        }
+    }
+
+    GameObject getPlatform()
+    {
+        GameObject obj = null;
     }
 
     
