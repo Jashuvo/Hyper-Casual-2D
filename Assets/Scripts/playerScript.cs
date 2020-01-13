@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class playerScript : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class playerScript : MonoBehaviour
     public float gravity = 1f;
     public float jumpHeight = 10f;
     public float leftBound,rightBound;
+    public GameObject jumpEffect;
 
     bool isDragging = false;
     Vector2 touchPos,playerPos, dragPos;
@@ -25,10 +28,18 @@ public class playerScript : MonoBehaviour
             if(playerRigid.velocity.y <= 0f){
                 jumpForce = gravity * jumpHeight;
                 playerRigid.velocity = new Vector2(0, jumpForce);
+                gravity += 0.01f;
+                Camera.main.backgroundColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
                 DestroyAndMakePlatform(collision);
+                Effect();
             }
             
         }
+    }
+
+    private void Effect()s
+    {
+       Destroy( Instantiate(jumpEffect, transform.position, Quaternion.identity), 0.5f);
     }
 
     void DestroyAndMakePlatform(Collider2D platform)
@@ -42,6 +53,7 @@ public class playerScript : MonoBehaviour
         AddGravity();
         GetInput();
         MovePlayer();
+        CheckPlayer();
     }
 
     void MovePlayer(){
@@ -73,5 +85,13 @@ public class playerScript : MonoBehaviour
 
     void AddGravity(){
         playerRigid.velocity =new Vector2(0,playerRigid.velocity.y - (gravity * gravity));
+    }
+
+    void CheckPlayer()
+    {
+        if(transform.position.y < Camera.main.transform.position.y - 15)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }

@@ -15,6 +15,8 @@ public class spawnPlatformScript : MonoBehaviour
 
     List<GameObject> platformList = new List<GameObject>();
 
+    float hue;
+
     void Start()
     {
         if (instance == null)
@@ -28,7 +30,16 @@ public class spawnPlatformScript : MonoBehaviour
         {
             MakePlatform();
         }
-        
+
+        inItColor();
+
+
+    }
+
+    void inItColor()
+    {
+        hue = Random.Range(0f, 1f);
+        Camera.main.backgroundColor = Color.HSVToRGB(hue, 0.6f, 0.8f);
     }
 
     private void MakeObjects()
@@ -41,9 +52,18 @@ public class spawnPlatformScript : MonoBehaviour
         }
     }
 
-    GameObject getPlatform()
+    private GameObject GetPlatform()
     {
         GameObject obj = null;
+        for(int i = 0; i < platformList.Count; i++)
+        {
+            if (!platformList[i].activeInHierarchy)
+            {
+                obj = platformList[i];
+                return obj;
+            }
+        }
+        return null;
     }
 
     
@@ -62,9 +82,27 @@ public class spawnPlatformScript : MonoBehaviour
 
         Vector2 newPosition = new Vector2(randomPosX, index * 5);
 
-        GameObject platform = Instantiate(platformPrefab, newPosition, Quaternion.identity);
-        platform.transform.SetParent(transform);
+        GameObject platform = GetPlatform();
+        platform.SetActive(true);
+        platform.transform.position = newPosition;
+        platform.transform.rotation = Quaternion.identity;
         platform.transform.localScale = new Vector2(platformWidth, platformHeight);
+        platform.transform.SetParent(transform);
+        SetColor(platform);
         index++;
+    }
+
+    void SetColor(GameObject platform)
+    {
+        if(Random.Range(0,3) != 0)
+        {
+            hue += 0.15f;
+            if(hue >= 1)
+            {
+                hue -=  1f;
+            }
+        }
+
+        platform.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(hue, 0.6f, 0.8f);
     }
 }
