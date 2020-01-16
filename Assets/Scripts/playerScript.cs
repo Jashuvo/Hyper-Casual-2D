@@ -28,6 +28,7 @@ public class playerScript : MonoBehaviour
             if(playerRigid.velocity.y <= 0f){
                 jumpForce = gravity * jumpHeight;
                 playerRigid.velocity = new Vector2(0, jumpForce);
+                ScoreManagerScript.instance.AddScore();
                 gravity += 0.01f;
                 Camera.main.backgroundColor = collision.gameObject.GetComponent<SpriteRenderer>().color;
                 DestroyAndMakePlatform(collision);
@@ -37,7 +38,7 @@ public class playerScript : MonoBehaviour
         }
     }
 
-    private void Effect()s
+    private void Effect()
     {
        Destroy( Instantiate(jumpEffect, transform.position, Quaternion.identity), 0.5f);
     }

@@ -96,7 +96,7 @@ public class spawnPlatformScript : MonoBehaviour
     {
         if(Random.Range(0,3) != 0)
         {
-            hue += 0.15f;
+            hue += 0.11f;
             if(hue >= 1)
             {
                 hue -=  1f;
