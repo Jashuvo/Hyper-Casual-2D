@@ -6,8 +6,8 @@ using TMPro;
 public class ScoreManagerScript : MonoBehaviour
 {
     [SerializeField]
-    TextMeshProUGUI gameScoreText;
-    int gameScore;
+    TextMeshProUGUI gameScoreText,bestScoreText;
+    public int gameScore;
 
     public static ScoreManagerScript instance;
     
@@ -19,11 +19,16 @@ public class ScoreManagerScript : MonoBehaviour
 
         }
         gameScore = 0;
+        bestScoreText.text = PlayerPrefs.GetInt("Best").ToString();
     }
 
     public void AddScore()
     {
         gameScore += 1;
         gameScoreText.text = gameScore.ToString();
+        if(gameScore > PlayerPrefs.GetInt("Best", 0)){
+            bestScoreText.text = gameScore.ToString();
+            PlayerPrefs.SetInt("Best", gameScore);
+        }
     }
 }

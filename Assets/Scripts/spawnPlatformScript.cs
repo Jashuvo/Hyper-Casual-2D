@@ -44,7 +44,7 @@ public class spawnPlatformScript : MonoBehaviour
 
     private void MakeObjects()
     {
-        for( int i=0; i<5; i++)
+        for( int i=0; i<3; i++)
         {
             GameObject platform = Instantiate(platformPrefab);
             platform.SetActive(false);
@@ -83,13 +83,28 @@ public class spawnPlatformScript : MonoBehaviour
         Vector2 newPosition = new Vector2(randomPosX, index * 5);
 
         GameObject platform = GetPlatform();
+        if (platform == null)
+        {
+            return;
+        }
         platform.SetActive(true);
         platform.transform.position = newPosition;
         platform.transform.rotation = Quaternion.identity;
         platform.transform.localScale = new Vector2(platformWidth, platformHeight);
         platform.transform.SetParent(transform);
+        platform.GetComponent<platformScript>().ChangePosition();
         SetColor(platform);
+        DecreaseWidth();
         index++;
+    }
+
+    void DecreaseWidth()
+    {
+        platformWidth -= 0.01f;
+        if(platformWidth < 1)
+        {
+            platformWidth = 1;
+        }
     }
 
     void SetColor(GameObject platform)
@@ -103,6 +118,6 @@ public class spawnPlatformScript : MonoBehaviour
             }
         }
 
-        platform.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(hue, 0.6f, 0.8f);
+        platform.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(hue, 0.7f, 0.9f);
     }
 }
